@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en" ng-app="myApp" ng-controller="myController">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <title>Angular js simple app</title>
+  </head>
+  <body>
+  
+  
+	<div class="container">
+      <hr>
+	    <button type="button" class="btn btn-info btn-lg pull-right"  data-toggle="modal" data-target="#myModal">Add User</button> 
+	    <h2>All User</h2>
+	    <span class="clearfix"></span>
+	  <hr>
+	</div>
+	
+	<div class="container">
+		<table class="table table-striped">
+		<thead>
+		  <tr >
+			<th>Index</th>
+			<th>Username</th>
+			<th>Email</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr ng-repeat="user in users">
+			<td>{{$index+1}}.</td>
+			<td>{{user.username}}</td>
+			<td>{{user.email}}</td>
+			<td>
+			  <button type="button" class="btn btn-info" data-toggle="modal"
+			  data-target="#myModalEdit" ng-click="selectUser(user)">Edit</button>
+			</td>
+			<td>
+			  <button type="button" class="btn btn-danger" data-toggle="modal"
+			  data-target="#myModalDelete" ng-click="selectUser(user)">Delete</button>
+			</td>
+		  </tr>
+		  
+		</tbody>
+	  </table>
+	</div>
+	
+	
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">New USer Registration</h4>
+        </div>
+		
+        <div class="modal-body">
+          
+		  
+		 <form action="/action_page.php">
+			<div class="form-group">
+			  <label >username</label>
+			  <input type="text" class="form-control" ng-model="Newuser.username">
+			</div>
+			<div class="form-group">
+			  <label >Email</label>
+			  <input type="text" class="form-control" ng-model="Newuser.email">
+			</div>
+			<div class="form-group">
+			  <label >fullname</label>
+			  <input type="text" class="form-control" ng-model="Newuser.fullname">
+			</div>
+
+			<button type="submit" class="btn btn-default" ng-click="saveUser()" data-dismiss="modal">save</button>
+       </form> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  
+ <!--edit model -->
+ <div class="modal fade" id="myModalEdit" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit USer Info</h4>
+        </div>
+		
+        <div class="modal-body">
+          
+		  
+		 <form action="/action_page.php">
+			<div class="form-group">
+			  <label >username</label>
+			  <input type="text" class="form-control" ng-model="Clickuser.username">
+			</div>
+			<div class="form-group">
+			  <label >Email</label>
+			  <input type="text" class="form-control" ng-model="Clickuser.email">
+			</div>
+			<div class="form-group">
+			  <label >fullname</label>
+			  <input type="text" class="form-control" ng-model="Clickuser.fullname">
+			</div>
+
+			<button type="submit" class="btn btn-default" ng-click="updateUser()" data-dismiss="modal" >save</button>
+       </form> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!--delete model -->
+   <div class="modal fade" id="myModalDelete" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Are You Sure to Delete??</h4>
+        </div>
+		
+        <div class="modal-body">
+			<strong style="color:red;">
+				YOu are going too delete {{Clickuser.fullname}} is deleted from your database.....
+			</strong>
+        </div>
+		
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal"
+		  ng-click="deleteUser()">Yes</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  
+  
+    <!-- Angular code start-->
+  		<script>
+			var app=angular.module('myApp',[]);
+			app.controller('myController',function($scope){
+			
+				$scope.Newuser={};
+				$scope.Clickuser={};
+				
+				
+				$scope.users=[
+					{username:"hamja",fullname:"Syed Amir hamja",email:"hamja@example"},
+					{username:"arafath",fullname:"Md Arafath Sheik",email:"arafath@example"},
+					{username:"hadi",fullname:"HAdi Molla",email:"hadi@example"}
+				];
+				
+				$scope.saveUser=function(){
+					$scope.users.push($scope.Newuser);
+					$scope.Newuser={};
+				};
+				
+				$scope.selectUser=function(user){
+					$scope.Clickuser=user;
+				}
+				$scope.updateUser=function(){
+				
+					
+				};
+				
+				$scope.deleteUser=function(){
+					$scope.users.splice($scope.users.indexOf($scope.Clickuser),1);
+					
+				};
+				
+				
+				
+			});
+		</script>
+  
+  
+  
+	
+	
+	
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
